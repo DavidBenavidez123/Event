@@ -11,6 +11,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   textField: {
+    marginBottom:50,
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 500
@@ -25,12 +26,12 @@ const styles = theme => ({
 
 class Register extends Component {
   state = {
-    name: '',
-    nameError: '',
+    username: '',
+    nameError: 'Name',
     email: '',
-    emailError: '',
+    emailError: 'Email',
     password: '',
-    passwordError: '',
+    passwordError: 'Password',
     buttonText: 'Sign Up',
     emailTextFieldError: false,
     nameTextFieldError: false,
@@ -44,30 +45,29 @@ class Register extends Component {
       this.setState({
         buttonText: '...signing up'
       });
-      console.log('hello this an success password');
       let data = {
-        name: this.state.name,
+        username: this.state.username,
         email: this.state.email,
         password: this.state.password
       };
-      axios
-        .post(' ', data)
-        .then(res => {
-          this.setState({ sent: true, buttonText: 'Sign Up Complete' });
-        })
-        .catch(() => {
-          this.setState({ buttonText: 'Failed to Sign up' });
-          console.log('password not sent');
-        });
+      e.preventDefault();
+        axios
+            .post('http://localhost:3300/api/register', data)
+            .then(res => {
+              this.setState({ sent: true, buttonText: 'Sign Up Complete , Please Login' });
+            })
+            .catch(err => {
+                console.log('Error', err)
+            })
 
       // clear form
       this.setState({
-        name: '',
-        nameError: '',
+        username: '',
+        nameError: 'Name',
         email: '',
-        emailError: '',
+        emailError: 'Email',
         password: '',
-        passwordError: '',
+        passwordError: 'Password',
         emailTextFieldError: false,
         nameTextFieldError: false,
         passwordTextFieldError: false
@@ -81,7 +81,7 @@ class Register extends Component {
 
   validate = () => {
     let isError = false;
-    if (!this.state.name.length) {
+    if (!this.state.username.length) {
       isError = true;
       this.setState({
         nameError: 'Cannot be empty',
@@ -89,7 +89,7 @@ class Register extends Component {
       });
     } else {
       this.setState({
-        nameError: '',
+        nameError: 'Name',
         nameTextFieldError: false
       });
     }
@@ -101,7 +101,7 @@ class Register extends Component {
       });
     } else {
       this.setState({
-        passwordError: '',
+        passwordError: 'Password',
         passwordTextFieldError: false
       });
     }
@@ -113,7 +113,7 @@ class Register extends Component {
       });
     } else {
       this.setState({
-        emailError: '',
+        emailError: 'Email',
         emailTextFieldError: false
       });
     }
@@ -130,29 +130,27 @@ class Register extends Component {
             <TextField
               error={this.state.nameTextFieldError}
               id="standard-name"
-              label="Name"
+              label={this.state.nameError}
               className={classes.textField}
-              value={this.state.name}
+              value={this.state.username}
               onChange={this.handleChange}
               margin="normal"
-              name="name"
+              name="username"
             />
-            <h3>{this.state.nameError}</h3>
             <TextField
               error={this.state.emailTextFieldError}
               id="standard-name"
-              label="Email"
+              label={this.state.emailError}
               className={classes.textField}
               value={this.state.email}
               name="email"
               onChange={this.handleChange}
               margin="normal"
             />
-            <h3>{this.state.emailError}</h3>
             <TextField
               error={this.state.passwordTextFieldError}
               id="standard-multiline-flexible"
-              label="password"
+              label={this.state.passwordError}
               multiline
               rowsMax="4"
               value={this.state.password}
@@ -161,7 +159,6 @@ class Register extends Component {
               margin="normal"
               name="password"
             />
-            <h3>{this.state.passwordError}</h3>
             <div className="button-container">
               <Button
                 variant="contained"

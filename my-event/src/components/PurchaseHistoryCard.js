@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   card: {
     width: 345,
-    height: 375
+    height: 400
   },
   media: {
     height: 0,
@@ -48,6 +48,7 @@ function EventsCard(prop) {
   function handleExpandClick() {
     setExpanded(!expanded);
   }
+
   return (
     <Card className={classes.card}>
       <Link to={`/event/${prop.events.event_id}`}>
@@ -70,6 +71,9 @@ function EventsCard(prop) {
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {prop.events.event_location}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Tickets: {prop.events.tickets} Price: ${prop.events.price}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

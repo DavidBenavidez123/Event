@@ -22,6 +22,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   textField: {
+    marginBottom:50,
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 500
@@ -36,10 +37,10 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    name: '',
-    nameError: '',
-    email: '',
-    emailError: '',
+    username: '',
+    nameError: 'Name',
+    password: '',
+    passwordError: 'Password',
     buttonText: 'Login',
     emailTextFieldError: false,
     nameTextFieldError: false
@@ -54,23 +55,31 @@ class Login extends Component {
       });
       console.log('hello this an success message');
       let data = {
-        name: this.state.name,
-        email: this.state.email
+        username: this.state.username,
+        password: this.state.password
       };
       axios
-        .post('', data)
-        .then(res => {})
-        .catch(() => {
-          this.setState({ buttonText: 'Message has failed to send' });
-          console.log('Login Failed');
+        .post('http://localhost:3300/api/login', data)
+        .then(res => {
+          console.log(res.data);
+          localStorage.setItem('jwt', res.data.token);
+          localStorage.setItem('userId', res.data.id);
+          this.props.history.push('/');
+          window.location.reload();
+        })
+        .catch(err => {
+          console.log('Error', err);
+          this.setState({
+            buttonText: 'Login Failed'
+          });
         });
 
       // clear form
       this.setState({
-        name: '',
+        username: '',
         nameError: '',
-        email: '',
-        emailError: '',
+        password: '',
+        passwordError: '',
         emailTextFieldError: false,
         nameTextFieldError: false
       });
@@ -83,7 +92,7 @@ class Login extends Component {
 
   validate = () => {
     let isError = false;
-    if (!this.state.name.length) {
+    if (!this.state.username.length) {
       isError = true;
       this.setState({
         nameError: 'Cannot be empty',
@@ -91,76 +100,73 @@ class Login extends Component {
       });
     } else {
       this.setState({
-        nameError: '',
+        nameError: 'Name',
         nameTextFieldError: false
       });
     }
-    if (this.state.email.indexOf('@') === -1) {
+    if (!this.state.password.length) {
       isError = true;
       this.setState({
-        emailError: 'This is not an email',
+        passwordError: 'Cannot be empty',
         emailTextFieldError: true
       });
     } else {
       this.setState({
-        emailError: '',
+        passwordError: 'Password',
         emailTextFieldError: false
       });
     }
     return isError;
   };
-
   render() {
     const { classes } = this.props;
     return (
-      <div className = "LoginPage">
-      <form className={classes.container} noValidate autoComplete="off">
-        <div className="Login">
-          <TextField
-            error={this.state.nameTextFieldError}
-            id="standard-name"
-            label="Name"
-            className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange}
-            margin="normal"
-            name="name"
-          />
-          <h3>{this.state.nameError}</h3>
-          <TextField
-            error={this.state.emailTextFieldError}
-            id="standard-name"
-            label="Email"
-            className={classes.textField}
-            value={this.state.email}
-            name="email"
-            onChange={this.handleChange}
-            margin="normal"
-          />
-          <h3>{this.state.emailError}</h3>
-          <Button
-            onClick={this.formSubmit}
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            {this.state.buttonText}
-          </Button>
+      <div className="LoginPage">
+        <form className={classes.container} noValidate autoComplete="off">
+          <div className="Login">
+            <TextField
+              error={this.state.nameTextFieldError}
+              id="standard-name"
+              label={this.state.nameError}
+              className={classes.textField}
+              value={this.state.username}
+              onChange={this.handleChange}
+              margin="normal"
+              name="username"
+            />
+            <TextField
+              error={this.state.emailTextFieldError}
+              id={"standard-name"}
+              label={this.state.passwordError}
+              className={classes.textField}
+              value={this.state.password}
+              name="password"
+              onChange={this.handleChange}
+              margin="normal"
+            />
+            <Button
+              onClick={this.formSubmit}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              {this.state.buttonText}
+            </Button>
 
-          <div>
-            <h2>Not registered yet , Register Now</h2>
-            <Link to={'/Register'}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Register
-              </Button>
-            </Link>
+            <div>
+              <h2>Not registered yet , Register Now</h2>
+              <Link to={'/Register'}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                >
+                  Register
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +15,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
@@ -62,38 +63,102 @@ const ResponsiveDrawer = props => {
     setMobileOpen(!mobileOpen);
   }
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        <Link to={'/Events'}>
-          <ListItem button={'Events'}>
+  function checkIfLoggedIn() {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      return drawer();
+    } else {
+      return notLoggedInDrawer();
+    }
+  }
+
+  function signout() {
+    localStorage.removeItem('jwt');
+    window.location.reload();
+    props.history.push('/');
+  }
+
+  function notLoggedInDrawer() {
+    return (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List>
+          <NavLink exact activeStyle={{ color: '#3F51B5' }} to={'/'}>
+            <ListItem button={'/'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Events'} />
+            </ListItem>
+          </NavLink>
+          <NavLink activeStyle={{ color: '#3F51B5' }} to={'/Login'}>
+            <ListItem button={'Login'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Login'} />
+            </ListItem>
+          </NavLink>
+          <Link to={'/CreateEvent'} />
+        </List>
+      </div>
+    );
+  }
+
+  function drawer() {
+    return (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List>
+          <NavLink activeStyle={{ color: '#3F51B5' }} exact to={'/'}>
+            <ListItem button={'/'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Events'} />
+            </ListItem>
+          </NavLink>
+          <NavLink
+            activeStyle={{
+              color: '#3F51B5'
+            }}
+            to={'/CreateEvent'}
+          >
+            <ListItem button={'CreateEvent'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Create an event'} />
+            </ListItem>
+          </NavLink>
+          <NavLink activeStyle={{ color: '#3F51B5' }} to={'/PurchaseHistory'}>
+            <ListItem button={'PurchaseHistory'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Purchase History'} />
+            </ListItem>
+          </NavLink>
+          <NavLink activeStyle={{ color: '#3F51B5' }} to={'/CreatedEvents'}>
+            <ListItem button={'CreatedEvents'}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Created Events'} />
+            </ListItem>
+          </NavLink>
+          <ListItem button={'Signout'}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
-            <ListItemText primary={'Events'} />
+            <ListItemText onClick={e => signout()} primary={'Signout'} />
           </ListItem>
-        </Link>
-        <Link to={'/Login'}>
-          <ListItem button={'Login'}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Login'} />
-          </ListItem>
-        </Link>
-        <Link to={'/CreateEvent'}>
-          <ListItem button={'CreateEvent'}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Create an event'} />
-          </ListItem>
-        </Link>
-      </List>
-    </div>
-  );
+        </List>
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -110,7 +175,7 @@ const ResponsiveDrawer = props => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Welcome David
+            Welcome {props.user.username}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -130,7 +195,7 @@ const ResponsiveDrawer = props => {
               keepMounted: true // Better open performance on mobile.
             }}
           >
-            {drawer}
+            {checkIfLoggedIn()}
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -141,7 +206,7 @@ const ResponsiveDrawer = props => {
             variant="permanent"
             open
           >
-            {drawer}
+            {checkIfLoggedIn()}
           </Drawer>
         </Hidden>
       </nav>

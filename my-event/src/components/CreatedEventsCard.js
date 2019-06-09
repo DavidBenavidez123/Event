@@ -48,7 +48,9 @@ function EventsCard(prop) {
   function handleExpandClick() {
     setExpanded(!expanded);
   }
+
   return (
+    
     <Card className={classes.card}>
       <Link to={`/event/${prop.events.event_id}`}>
         <CardHeader

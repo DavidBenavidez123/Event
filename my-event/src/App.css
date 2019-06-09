@@ -2,6 +2,7 @@
   text-align: center;
   width: 100%;
   display: flex;
+  justify-content: center;
 }
 
 .App-logo {
@@ -57,7 +58,6 @@ a {
   transform: translate(-50%, -50%);
 }
 
-
 /* Login page */
 
 /* Register page */
@@ -69,8 +69,6 @@ a {
   align-items: center;
 }
 
-
-
 /* Register page */
 
 /* Eventpage */
@@ -79,7 +77,6 @@ a {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  width: 80%;
 }
 
 @media screen and (max-width: 600px) {
@@ -93,6 +90,59 @@ a {
 }
 
 /* Event page */
+
+/* singleEventDisplay */
+
+.singleEventDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: start;
+  justify-content: center;
+  margin-right: 10%;
+  color: #6f7287;
+}
+.purchase-flex{
+  display: flex;
+  justify-content: center;
+}
+
+.singleEventDisplay img {
+  width: 800px;
+  height: 500px;
+  object-fit: cover;
+}
+
+.singleEventDisplay h2 {
+  justify-content: end;
+}
+
+.singleEventDisplay p {
+  line-height: 25px;
+}
+
+/* singleEventDisplay */
+
+.createEvent {
+  margin-top: 50px;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.create {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: start;
+  justify-content: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: #6f7287;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
