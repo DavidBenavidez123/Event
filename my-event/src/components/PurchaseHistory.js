@@ -19,6 +19,7 @@ class PurchaseHistory extends Component {
         Authorization: token
       }
     };
+    
     axios
       .get('http://localhost:3300/getUserData', options)
       .then(res => {
