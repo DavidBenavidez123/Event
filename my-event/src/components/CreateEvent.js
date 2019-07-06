@@ -31,6 +31,7 @@ const styles = theme => ({
   },
   menu: {
     width: 200
+    
   }
 });
 
