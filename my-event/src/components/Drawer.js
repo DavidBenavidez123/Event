@@ -68,6 +68,7 @@ const ResponsiveDrawer = props => {
       return drawer();
     } else {
       return notLoggedInDrawer();
+      
     }
   }
 
