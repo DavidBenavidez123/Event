@@ -107,7 +107,7 @@ class Login extends Component {
     if (!this.state.password.length) {
       isError = true;
       this.setState({
-        passwordError: 'Cannot be empty',
+        passwordError: 'Cannot be empty ',
         emailTextFieldError: true
       });
     } else {
