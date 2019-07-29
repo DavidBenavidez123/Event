@@ -6,14 +6,14 @@ class SingleEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      event: [],
+      event: {},
       ticket: 1,
       price: 0,
       purchaseError: ''
     };
   }
 
-  /* React strap Modal */
+
 
   componentDidMount() {
     this.getEvent();

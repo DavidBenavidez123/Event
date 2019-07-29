@@ -82,6 +82,7 @@ const ResponsiveDrawer = props => {
     return (
       <div>
         <div className={classes.toolbar} />
+
         <Divider />
         <List>
           <NavLink exact activeStyle={{ color: '#3F51B5' }} to={'/'}>
