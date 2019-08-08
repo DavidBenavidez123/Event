@@ -213,6 +213,7 @@ function login(req, res) {
       res.status(500).json({ err });
     });
 }
+
 function getUserData(req, res) {
   const token = req.headers.authorization;
   if (token) {

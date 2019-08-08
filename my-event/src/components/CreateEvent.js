@@ -38,6 +38,7 @@ const styles = theme => ({
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       pictures: '',
       event_name: '',
