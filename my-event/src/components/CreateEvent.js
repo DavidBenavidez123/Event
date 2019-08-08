@@ -38,7 +38,7 @@ const styles = theme => ({
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       pictures: '',
       event_name: '',
@@ -94,6 +94,7 @@ class CreateEvent extends Component {
               margin="normal"
               name="event_name"
             />
+            
             <TextField
               error={this.state.emailTextFieldError}
               id="standard-name"
